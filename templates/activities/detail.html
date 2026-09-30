@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ activity.title }} - دبیرستان فاطمه زهرا{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <a href="{% url 'activities:list' %}" class="text-decoration-none mb-3 d-inline-block">
+                    <i class="bi bi-arrow-right"></i> بازگشت به فعالیت‌ها
+                </a>
+                
+                <div class="card">
+                    {% if activity.image %}
+                        <img src="{{ activity.image.url }}" class="card-img-top" style="max-height: 400px; object-fit: cover;" alt="{{ activity.title }}">
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <span class="badge bg-light text-dark mb-3">{{ activity.get_category_display }}</span>
+                        <h1 class="h3 mb-3">{{ activity.title }}</h1>
+                        
+                        <div class="text-muted small mb-4 pb-3 border-bottom">
+                            <i class="bi bi-calendar"></i> {{ activity.date|date:"Y/m/d" }}
+                        </div>
+                        
+                        <div style="line-height: 1.9;">
+                            {{ activity.description|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

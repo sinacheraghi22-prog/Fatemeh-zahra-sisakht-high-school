@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}فعالیت‌ها - دبیرستان فاطمه زهرا{% endblock %}
+
+{% block content %}
+
+<section class="py-4" style="background-color: var(--primary); color: white;">
+    <div class="container">
+        <h1 class="h3 mb-0">فعالیت‌های مدرسه</h1>
+    </div>
+</section>
+
+<section class="py-4 bg-white border-bottom">
+    <div class="container">
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'activities:list' %}" 
+               class="btn btn-sm {% if not current_category %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                همه
+            </a>
+            {% for code, label in categories %}
+                <a href="?category={{ code }}" 
+                   class="btn btn-sm {% if current_category == code %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    {{ label }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        {% if activities %}
+            <div class="row g-4">
+                {% for activity in activities %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            {% if activity.image %}
+                                <img src="{{ activity.image.url }}" class="card-img-top" 
+                                     style="height: 200px; object-fit: cover;" alt="{{ activity.title }}">
+                            {% else %}
+                                <div style="height: 200px; background: #E2E8F0;" 
+                                     class="d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image" style="font-size: 3rem; color: #94A3B8;"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <span class="badge bg-light text-dark mb-2">{{ activity.get_category_display }}</span>
+                                <h5 class="card-title">
+                                    <a href="{% url 'activities:detail' activity.pk %}" 
+                                       class="text-decoration-none" style="color: var(--primary);">
+                                        {{ activity.title }}
+                                    </a>
+                                </h5>
+                                <p class="card-text text-muted small">{{ activity.description|truncatewords:15 }}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0 text-muted small">
+                                <i class="bi bi-calendar"></i> {{ activity.date|date:"Y/m/d" }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                فعالیتی برای نمایش وجود ندارد.
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

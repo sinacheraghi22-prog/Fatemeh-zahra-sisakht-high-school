@@ -41,6 +41,7 @@ INSTALLED_APPS = [
      # my apps
     'accounts',
     'announcements',
+    'activities',
 ]
 AUTH_USER_MODEL = 'accounts.User'
 

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}اطلاعیه‌ها - دبیرستان فاطمه زهرا{% endblock %}
+
+{% block content %}
+
+<section class="py-4" style="background-color: var(--primary); color: white;">
+    <div class="container">
+        <h1 class="h3 mb-0">اطلاعیه‌ها</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        {% if announcements %}
+            <div class="row g-3">
+                {% for ann in announcements %}
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title mb-0">
+                                        <a href="{% url 'announcements:detail' ann.pk %}" 
+                                           class="text-decoration-none" 
+                                           style="color: var(--primary);">
+                                            {{ ann.title }}
+                                        </a>
+                                    </h5>
+                                    {% if ann.priority == 'urgent' %}
+                                        <span class="badge bg-danger">فوری</span>
+                                    {% elif ann.priority == 'important' %}
+                                        <span class="badge bg-warning text-dark">مهم</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">عادی</span>
+                                    {% endif %}
+                                </div>
+                                <p class="card-text text-muted">{{ ann.content|truncatewords:30 }}</p>
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar"></i>
+                                    {{ ann.created_at|date:"Y/m/d" }}
+                                    {% if ann.author %}
+                                        — {{ ann.author.get_full_name|default:ann.author.username }}
+                                    {% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> هنوز اطلاعیه‌ای منتشر نشده است.
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

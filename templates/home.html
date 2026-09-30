@@ -45,5 +45,45 @@
         </div>
     </div>
 </section>
-
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4 fw-bold mb-0">آخرین اطلاعیه‌ها</h2>
+            <a href="{% url 'announcements:list' %}" class="text-decoration-none" style="color: var(--primary);">
+                مشاهده همه <i class="bi bi-arrow-left"></i>
+            </a>
+        </div>
+        
+        {% if latest_announcements %}
+            <div class="row g-3">
+                {% for ann in latest_announcements %}
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                {% if ann.priority == 'urgent' %}
+                                    <span class="badge bg-danger mb-2">فوری</span>
+                                {% elif ann.priority == 'important' %}
+                                    <span class="badge bg-warning text-dark mb-2">مهم</span>
+                                {% endif %}
+                                <h5 class="card-title">
+                                    <a href="{% url 'announcements:detail' ann.pk %}" 
+                                       class="text-decoration-none" 
+                                       style="color: var(--primary);">
+                                        {{ ann.title }}
+                                    </a>
+                                </h5>
+                                <p class="card-text text-muted small">{{ ann.content|truncatewords:15 }}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0 text-muted small">
+                                {{ ann.created_at|date:"Y/m/d" }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">هنوز اطلاعیه‌ای منتشر نشده است.</div>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}

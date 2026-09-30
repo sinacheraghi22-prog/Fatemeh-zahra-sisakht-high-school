@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ announcement.title }} - دبیرستان فاطمه زهرا{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <a href="{% url 'announcements:list' %}" class="text-decoration-none mb-3 d-inline-block">
+                    <i class="bi bi-arrow-right"></i> بازگشت به لیست اطلاعیه‌ها
+                </a>
+                
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h1 class="h3 mb-0">{{ announcement.title }}</h1>
+                            {% if announcement.priority == 'urgent' %}
+                                <span class="badge bg-danger">فوری</span>
+                            {% elif announcement.priority == 'important' %}
+                                <span class="badge bg-warning text-dark">مهم</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="text-muted small mb-4 pb-3 border-bottom">
+                            <i class="bi bi-calendar"></i>
+                            {{ announcement.created_at|date:"Y/m/d - H:i" }}
+                            {% if announcement.author %}
+                                | <i class="bi bi-person"></i>
+                                {{ announcement.author.get_full_name|default:announcement.author.username }}
+                            {% endif %}
+                        </div>
+                        
+                        {% if announcement.image %}
+                            <img src="{{ announcement.image.url }}" class="img-fluid rounded mb-4" alt="{{ announcement.title }}">
+                        {% endif %}
+                        
+                        <div class="content" style="line-height: 1.9;">
+                            {{ announcement.content|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

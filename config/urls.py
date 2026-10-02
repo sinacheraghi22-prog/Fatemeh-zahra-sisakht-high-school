@@ -10,8 +10,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('announcements/', include('announcements.urls')),
     path('activities/', include('activities.urls')),
-    
-    # لاگین و لاگ‌اوت
+    path('about/', include('about.urls')),   # ← این خط
     path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

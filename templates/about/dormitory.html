@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}خوابگاه - دبیرستان فاطمه زهرا{% endblock %}
+
+{% block content %}
+
+{% if dormitory %}
+
+<section class="py-4" style="background-color: var(--primary); color: white;">
+    <div class="container">
+        <h1 class="h3 mb-0">{{ dormitory.name }}</h1>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- اطلاعات خوابگاه -->
+            <div class="col-lg-4">
+                <div class="card">
+                    {% if dormitory.image %}
+                        <img src="{{ dormitory.image.url }}" class="card-img-top" alt="{{ dormitory.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">اطلاعات خوابگاه</h5>
+                        <p class="card-text">{{ dormitory.description|linebreaks }}</p>
+                        
+                        <ul class="list-unstyled mt-3">
+                            {% if dormitory.manager %}
+                                <li class="mb-2"><i class="bi bi-person"></i> مسئول: {{ dormitory.manager }}</li>
+                            {% endif %}
+                            {% if dormitory.phone %}
+                                <li class="mb-2"><i class="bi bi-telephone"></i> تلفن: {{ dormitory.phone }}</li>
+                            {% endif %}
+                            {% if dormitory.address %}
+                                <li class="mb-2"><i class="bi bi-geo-alt"></i> {{ dormitory.address }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- آمار -->
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">آمار کلی</h5>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <h3 class="mb-0" style="color: var(--primary);">{{ dormitory.blocks.count }}</h3>
+                                <small class="text-muted">بلوک</small>
+                            </div>
+                            <div class="col-4">
+                                <h3 class="mb-0" style="color: var(--primary);">{{ dormitory.total_suites }}</h3>
+                                <small class="text-muted">سوییت</small>
+                            </div>
+                            <div class="col-4">
+                                <h3 class="mb-0" style="color: var(--primary);">{{ dormitory.total_capacity }}</h3>
+                                <small class="text-muted">ظرفیت</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- بلوک‌ها -->
+            <div class="col-lg-8">
+                <h2 class="h4 mb-4">بلوک‌ها</h2>
+                <div class="row g-3">
+                    {% for block in dormitory.blocks.all %}
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ block.name }}</h5>
+                                    {% if block.description %}
+                                        <p class="card-text text-muted small">{{ block.description }}</p>
+                                    {% endif %}
+                                    
+                                    <div class="d-flex gap-3 mt-3">
+                                        <div>
+                                            <i class="bi bi-door-open" style="color: var(--primary);"></i>
+                                            <strong>{{ block.suite_count }}</strong> سوییت
+                                        </div>
+                                        <div>
+                                            <i class="bi bi-people" style="color: var(--primary);"></i>
+                                            <strong>{{ block.total_capacity }}</strong> نفر
+                                        </div>
+                                    </div>
+                                    
+                                    {% if block.manager %}
+                                        <p class="mt-2 mb-0 small text-muted">
+                                            <i class="bi bi-person"></i> مسئول: {{ block.manager }}
+                                        </p>
+                                    {% endif %}
+                                    
+                                    <a href="{% url 'about:block' block.pk %}" class="btn btn-primary btn-sm mt-3">
+                                        مشاهده جزئیات
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-info">هنوز بلوکی ثبت نشده است.</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% else %}
+
+<section class="py-5">
+    <div class="container">
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> هنوز اطلاعات خوابگاه ثبت نشده است.
+        </div>
+    </div>
+</section>
+
+{% endif %}
+
+{% endblock %}

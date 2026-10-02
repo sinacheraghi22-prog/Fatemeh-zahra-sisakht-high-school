@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Dormitory, Block, Suite
+from .models import Dormitory, Block, Suite, SiteStat
 
 
 class SuiteInline(admin.TabularInline):
@@ -19,7 +19,7 @@ class DormitoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'manager', 'total_suites', 'total_capacity')
     search_fields = ('name', 'manager')
     inlines = [BlockInline]
-    
+
     fieldsets = (
         ('اطلاعات اصلی', {
             'fields': ('name', 'description', 'image')
@@ -45,3 +45,11 @@ class SuiteAdmin(admin.ModelAdmin):
     list_filter = ('block', 'block__dormitory')
     search_fields = ('number',)
     ordering = ('block', 'order')
+
+
+@admin.register(SiteStat)
+class SiteStatAdmin(admin.ModelAdmin):
+    list_display = ('title', 'value', 'icon', 'order', 'is_active')
+    list_editable = ('value', 'order', 'is_active')
+    list_filter = ('is_active',)
+    ordering = ('order',)

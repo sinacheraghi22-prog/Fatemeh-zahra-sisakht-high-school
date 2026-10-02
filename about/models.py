@@ -85,3 +85,29 @@ class Suite(models.Model):
     
     def __str__(self):
         return f"{self.block.name} - سوییت {self.number}"
+class SiteStat(models.Model):
+    """آمار نمایش داده شده در صفحه اصلی"""
+    ICON_CHOICES = [
+        ('bi-people-fill', 'دانش‌آموزان'),
+        ('bi-person-badge', 'دبیران'),
+        ('bi-book', 'کتاب/رشته'),
+        ('bi-trophy', 'افتخارات'),
+        ('bi-building', 'ساختمان'),
+        ('bi-mortarboard-fill', 'فارغ‌التحصیلان'),
+        ('bi-award', 'جوایز'),
+        ('bi-star-fill', 'ستاره'),
+    ]
+    
+    title = models.CharField('عنوان', max_length=100, help_text='مثلاً: دانش‌آموز')
+    value = models.CharField('مقدار', max_length=50, help_text='مثلاً: ۵۰۰+')
+    icon = models.CharField('آیکون', max_length=50, choices=ICON_CHOICES, default='bi-people-fill')
+    order = models.PositiveIntegerField('ترتیب نمایش', default=0)
+    is_active = models.BooleanField('فعال', default=True)
+    
+    class Meta:
+        verbose_name = 'آمار صفحه اصلی'
+        verbose_name_plural = 'آمار صفحه اصلی'
+        ordering = ['order']
+    
+    def __str__(self):
+        return f"{self.title}: {self.value}"
